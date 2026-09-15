@@ -140,11 +140,11 @@ you want a health check.
 Works across Claude Code, Cursor, GitHub Copilot, and the other agents the
 [`skills`](https://www.skills.sh) CLI supports.
 
-**Install the whole kit in one command** — `--all` takes every skill in the repo,
-installs it to every agent it detects, and skips the prompts:
+**Install the whole kit in one command** — `--skill '*'` takes every skill in the
+repo (quote the `*` so your shell doesn't expand it):
 
 ```bash
-npx skills add https://github.com/zeeshanhanif/agentic-sdlc-kit --all
+npx skills add https://github.com/zeeshanhanif/agentic-sdlc-kit --skill '*'
 ```
 
 **Or pick from a list.** Run it without `--skill` and the CLI shows an interactive
