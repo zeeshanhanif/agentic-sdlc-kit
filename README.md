@@ -1,4 +1,10 @@
+<div align="center">
+
+<img src="docs/assets/logo.svg" alt="Agentic SDLC Kit" width="120">
+
 # Agentic SDLC Kit
+
+</div>
 
 A pipeline of twelve [Agent Skills](https://agentskills.io) that carry a software
 project from *"I have an idea"* to a **deployed, verified, maintainable system** —
@@ -135,10 +141,15 @@ you want a health check.
 
 ## Install
 
+Three ways in. Pick by what you're using: the **`skills` CLI** works in any agent
+and is the only path that installs a subset; the **Claude Code plugin** takes all
+twelve in one command; **manual copy** needs no tooling.
+
 ### Method 1 — the `skills` CLI (recommended)
 
 Works across Claude Code, Cursor, GitHub Copilot, and the other agents the
-[`skills`](https://www.skills.sh) CLI supports.
+[`skills`](https://www.skills.sh) CLI supports — and it's the path to use if you
+want only some of the twelve.
 
 **Install the whole kit in one command** — `--skill '*'` takes every skill in the
 repo (quote the `*` so your shell doesn't expand it):
@@ -180,8 +191,32 @@ The CLI resolves each skill because it lives at `skills/<name>/SKILL.md` and the
 `--skill` value matches the `name:` in that file's frontmatter. It reads the
 **pushed GitHub repo**, not your local clone.
 
+### Method 2 — Claude Code plugin
+
+Installs **all twelve as a unit** from this repo's own marketplace. In a Claude
+Code session:
+
+```text
+/plugin marketplace add zeeshanhanif/agentic-sdlc-kit
+/plugin install agentic-sdlc-kit@zeeshanhanif
+```
+
+Or from the terminal:
+
+```bash
+claude plugin marketplace add zeeshanhanif/agentic-sdlc-kit
+claude plugin install agentic-sdlc-kit@zeeshanhanif
+```
+
+The kit installs as one plugin because the twelve skills share an ID vocabulary
+and a traceability matrix with per-column ownership — a partial install leaves
+dangling references. **If you want a subset, use Method 1.**
+
+Updates come with `/plugin update agentic-sdlc-kit`, and `/plugin uninstall
+agentic-sdlc-kit` removes all twelve in one step.
+
 <a id="install-claude-code"></a>
-### Method 2 — manual copy (Claude Code)
+### Method 3 — manual copy (Claude Code)
 
 **Personal — available in all your projects:**
 
@@ -208,6 +243,23 @@ git add .claude/skills && git commit -m "Add sdlc-orchestrator skill"
 If `~/.claude/skills/` already existed when your session started, new skills are
 picked up live. If you just created that directory, restart Claude Code once so
 it starts watching it.
+
+### A note on names: plugin installs are namespaced
+
+A plugin install prefixes every skill with the plugin name. Same skill, two
+addresses:
+
+| Installed via | Invoke as |
+| :--- | :--- |
+| `skills` CLI (Method 1) or manual copy (Method 3) | `/requirements-engineering` |
+| Claude Code plugin (Method 2) | `/agentic-sdlc-kit:requirements-engineering` |
+
+Neither is the "correct" form — both work, and if you have the kit installed both
+ways the two addresses coexist rather than one shadowing the other. **Automatic
+triggering works identically either way**: you describe what you want, the skill's
+description matches, and it fires without you typing a command at all. The
+examples throughout this README use the bare form for readability; add the
+`agentic-sdlc-kit:` prefix if you installed as a plugin.
 
 ### Confirm they loaded
 
