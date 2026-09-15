@@ -1,4 +1,10 @@
+<div align="center">
+
+<img src="docs/assets/logo.svg" alt="Agentic SDLC Kit" width="120">
+
 # Agentic SDLC Kit
+
+</div>
 
 A pipeline of twelve [Agent Skills](https://agentskills.io) that carry a software
 project from *"I have an idea"* to a **deployed, verified, maintainable system** —
