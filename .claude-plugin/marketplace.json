@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "zeeshanhanif",
+  "owner": {
+    "name": "Zeeshan Hanif",
+    "url": "https://github.com/zeeshanhanif"
+  },
+  "description": "Plugins published by Zeeshan Hanif.",
+  "plugins": [
+    {
+      "name": "agentic-sdlc-kit",
+      "source": "./",
+      "description": "Twelve SDLC Agent Skills that run as one pipeline — requirements through deployment, then a per-feature build loop with independent acceptance verification.",
+      "category": "workflow",
+      "homepage": "https://github.com/zeeshanhanif/agentic-sdlc-kit"
+    }
+  ]
+}

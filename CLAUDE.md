@@ -27,10 +27,16 @@ Consequences for how you work here:
 ## 2. Layout and install-path invariants
 
 ```text
+.claude-plugin/
+├── plugin.json         # Claude Code plugin manifest (owns `version`)
+└── marketplace.json    # the `zeeshanhanif` marketplace, one entry, source "./"
 skills/<skill-name>/
 ├── SKILL.md            # required: frontmatter + the workflow
 └── references/         # optional: guides SKILL.md tells the agent to read on demand
 ```
+
+The repo ships through **three** paths at once — the `skills` CLI, the Claude Code
+plugin, and manual copy. An edit that serves one must not break the others.
 
 Load-bearing and easy to break:
 
@@ -49,6 +55,29 @@ Load-bearing and easy to break:
   `.claude/skills/<name>/SKILL.md` (project). One level too deep silently fails.
 - Renaming a skill directory or its frontmatter `name` changes the install command
   → update README's Install section and every example in lockstep.
+
+Plugin-specific, all verified against the live docs:
+
+- **`skills/` is auto-discovered at the plugin root — do NOT add a `skills` field**
+  to either manifest. (For `skills` the field is additive, but `commands`/`agents`
+  *replace* their default scan, so the habit is dangerous.) And never move
+  `skills/` inside `.claude-plugin/`: only `plugin.json` and `marketplace.json`
+  live there.
+- **`plugin.json`'s `name` is the namespace prefix.** Renaming it silently changes
+  every plugin user's address from `/agentic-sdlc-kit:<skill>` to something else.
+- **Release rule — `version` is declared in `plugin.json` and nowhere else, and
+  must be bumped on every release.** Claude Code pins the cache by version string:
+  ship changes without a bump and existing plugin users keep the stale copy. If the
+  marketplace entry also sets `version`, `plugin.json` wins *without warning*, so a
+  forgotten manifest version masks the marketplace value. `claude plugin tag` exists
+  to tag a release and check the two agree.
+- **Skills must keep referring to each other by bare name** ("re-invoke
+  feature-implementation", "route to detailed-design's amendment path") and **never
+  by a slash form.** `/detailed-design` is wrong for plugin users (they have
+  `/agentic-sdlc-kit:detailed-design`); a bare name is correct for everyone. This
+  currently holds across all 61 files — keep it that way.
+- The plugin payload is the **whole repo** (`source: "./"`), so anything committed
+  at the root ships to every plugin user.
 
 ## 3. The twelve skills at a glance
 

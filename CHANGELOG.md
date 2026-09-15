@@ -3,11 +3,43 @@
 All notable changes to this collection of Agent Skills are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-This project does not yet publish tagged releases, so entries are grouped by date.
+Entries are grouped by date. Releases are tagged, and a release that changes what
+the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
+pins its cache to that string, so plugin users keep the old copy until it changes.
 
-## [Unreleased]
+## [2.0.0] — 2026-09-15
+
+### Added
+- **Claude Code plugin distribution**, alongside the existing `skills` CLI path —
+  the twelve skills install as **one plugin** from this repo's own marketplace:
+  `/plugin marketplace add zeeshanhanif/agentic-sdlc-kit` then
+  `/plugin install agentic-sdlc-kit@zeeshanhanif`. One plugin rather than twelve
+  because the skills share an ID vocabulary and the RTM's per-column ownership; a
+  partial install leaves dangling references. Users wanting a subset keep using the
+  `skills` CLI.
+- **`.claude-plugin/plugin.json`** — the plugin manifest, carrying `license`
+  (Apache-2.0), `repository`, `homepage`, `author`, and `keywords`. It declares
+  **no `skills` field**: a root-level `skills/` directory is auto-discovered. It is
+  the **single** declaration site for `version`.
+- **`.claude-plugin/marketplace.json`** — the `zeeshanhanif` marketplace, a single
+  entry with `"source": "./"`. Deliberately carries **no `version`** (plugin.json
+  wins silently, so declaring it twice masks bumps) and no `skills` field.
 
 ### Changed
+- **README Install section** restructured into **three co-equal paths** — the
+  `skills` CLI first (the cross-agent path, and the only one that installs a
+  subset), the Claude Code plugin second, manual copy third. The CLI's whole-kit
+  `--skill '*'`, interactive checklist, per-skill `--skill <name>`, and flag table
+  are unchanged. Adds one note giving both invocation forms side by side:
+  `/requirements-engineering` for CLI and manual installs,
+  `/agentic-sdlc-kit:requirements-engineering` for plugin installs — neither is the
+  canonical form, both coexist, and description-based auto-triggering is identical
+  either way. Walkthrough examples keep the bare form.
+- **CLAUDE.md** records the plugin invariants: `skills/` is auto-discovered (never
+  declare it, never move it into `.claude-plugin/`), `plugin.json`'s `name` is the
+  namespace prefix, the bump-every-release rule, and the requirement that skills go
+  on referring to each other by bare name rather than any slash form — the property
+  that lets one set of skill files serve all three install paths.
 - **License** changed from **MIT** to the **Apache License 2.0**. Apache adds an
   explicit patent grant with a retaliation clause and requires downstream
   modifiers to state that they changed files. Adds a root **`NOTICE`** file that
