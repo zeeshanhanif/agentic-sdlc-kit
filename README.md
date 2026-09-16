@@ -708,8 +708,11 @@ never assumes (detection tells it what's *possible*; only you say what's
   audience) when there's no existing design;
 - **Extract from reference images** you drop into `docs/design-refs/`;
 - **Ingest an existing design file** or brand book and map it onto the structure;
-- **Connect a design tool** (Figma and others via MCP) and pull tokens, styles,
-  and components.
+- **Connect a design tool** via MCP — Figma, Figma Make, Claude Design, or
+  another — and pull tokens, styles, and components. The skill detects what's
+  connected, offers to connect one if nothing is, and records how faithful the
+  result actually is: values *read* from variables or a design system are exact,
+  values *inferred* from a generated artifact's code are not, and it says which.
 
 Every mode ends by playing back a proposed direction for your confirmation —
 extraction, ingestion, and research are approximations, never asserted as fact.
@@ -746,7 +749,7 @@ skills/ux-foundations/
 └── references/
     ├── elicitation-guide.md        # UX interview; personas confirmed from the SRS
     ├── source-modes.md             # the 4 design-source acquisition modes
-    ├── design-tool-integrations.md # Mode 4: pulling from Figma etc. via MCP
+    ├── design-tool-integrations.md # Mode 4: detect/connect a tool, per-tool fetches
     ├── design-system-guide.md      # the shared core: tokens, components, a11y, voice
     ├── surface-profile-guide.md    # per-surface layer: IA, flows, screen inventory (SCR IDs)
     ├── design-md-guide.md          # the render-time, agent-ready design.md

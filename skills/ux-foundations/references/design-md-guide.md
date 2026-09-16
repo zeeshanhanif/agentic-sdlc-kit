@@ -120,19 +120,29 @@ button-primary"), and the one-line layout recipe.
   } }
   ```
 
-  `mode` and `fidelity` are always populated (research → designed-from-
-  requirements; images → approximate; design-file → mapped; tool → exact).
+  `mode` and `fidelity` are always populated. Modes 1–3 map fixed: research →
+  designed-from-requirements; images → approximate; design-file → mapped.
+  **Tool mode is decided by the source, not by the mode** — `exact` when the
+  values were *read* (variables, a published design system), `mapped` when they
+  were *inferred from a generated artifact's code*. A prompt-to-app tool that
+  exposes no variables is `mapped`; claiming `exact` there asserts a precision
+  nobody measured, and `ui-design` leans on this field. When in doubt, the
+  lower claim is the honest one.
+
   **`source` is populated only in tool mode (mode 4)** — the tool and
   file/project the system was pulled from, e.g.
   `{ "tool": "figma", "locator": "https://figma.com/file/<id>", "fetched": "<date>" }` —
-  and stays `null` otherwise. This records facts about *this document's own
+  and stays `null` otherwise. `tool` is a stable slug, not a display name:
+  `figma` | `figma-make` | `claude-design` | `open-design` | `<slug>` for
+  anything else. Keep `figma` and `figma-make` distinct even though they share
+  one connection — they differ in what was fetchable, which is exactly what a
+  later reader needs to know. This records facts about *this document's own
   source*, not any downstream convention. Note the converse for consumers:
   `source: null` means only that the *system* wasn't tool-sourced; screens may
   still exist in a tool later.
 - **Known Gaps:** what the system doesn't yet define (states not extractable,
   breakpoints assumed, motion undefined) — honest, so a later session knows
   what's decided versus defaulted.
-```
 
 ## Right-sizing
 

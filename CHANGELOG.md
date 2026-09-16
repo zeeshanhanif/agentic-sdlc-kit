@@ -7,6 +7,53 @@ Entries are grouped by date. Releases are tagged, and a release that changes wha
 the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
 pins its cache to that string, so plugin users keep the old copy until it changes.
 
+## [Unreleased]
+
+### Added
+- **`ux-foundations` Mode 4 can now find and connect a design tool.** The mode
+  previously assumed one was already connected and named only Figma. Its
+  reference gains a **detection and connection** section: three states rather
+  than two (absent / configured-but-unauthorized / connected — a server whose
+  tools are listed can still fail every call), detection by **tool-name prefix
+  substring** because server names are mangled (`claude.ai Figma` surfaces as
+  `mcp__claude_ai_Figma__*`), an identity probe to prove authorization, and the
+  connection paths for Figma and Claude Design. `SKILL.md` Phase 1 gains the
+  branch it was missing: Mode 4 chosen with nothing connected now **offers to
+  connect** instead of behaving undefinedly, and never silently downgrades.
+- **Claude Design** promoted from a three-line stub in both integration
+  references. Design systems are first-class there, which makes it a token
+  *source* rather than a generator to screenshot; enumeration (projects, files)
+  is confirmed rather than assumed, so `ui-design` can register prior screens
+  instead of regenerating them. Notes that the built-in design skill is **not**
+  a substitute for the MCP server — it publishes artifacts but exposes none of
+  the fetches.
+- **Figma Make** promoted from a three-line stub, and corrected: it is **not a
+  separate integration**. Same server and auth as Figma, nothing extra to
+  connect — but only the design-context fetch accepts a `/make/` file. No
+  variables, no structure metadata, no screenshot, and no write path, so
+  `ui-design` records that **generating *into* Make is unavailable** (generate
+  into a Figma design file or fall to code-native).
+
+### Changed
+- **`design_provenance` fidelity is now decided by the source, not the mode.**
+  `design-md-guide.md` §9 previously hard-mapped "tool → exact". That is wrong
+  for a prompt-to-app tool: with no variables to read, tokens are inferred from
+  generated code, which is `mapped`. Recording `exact` there claimed a precision
+  nobody measured — and `ui-design/references/strategy-guide.md` reads this
+  field to choose its anchor strategy. Tool mode is now `exact` only when values
+  were *read* (variables, a published design system), `mapped` when *inferred*.
+  Adds the missing `source.tool` slug vocabulary (`figma` | `figma-make` |
+  `claude-design` | `open-design` | `<slug>`), keeping `figma` and `figma-make`
+  distinct despite the shared connection because they differ in what was
+  fetchable. Also fixes a stray unbalanced code fence in that section.
+- **`source-modes.md` Mode 4** no longer calls tool mode "the highest-fidelity
+  source" unconditionally — true when the tool publishes values, false for
+  generated artifacts.
+- **CLAUDE.md** records both as cross-skill contracts, plus the rule that the
+  two `design-tool-integrations.md` files carry **no date stamps**: current
+  command shapes plus "verify against live docs", since a dated block reads
+  stale within a week and invites distrust of the whole file.
+
 ## [2.0.0] — 2026-09-15
 
 ### Added

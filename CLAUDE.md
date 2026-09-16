@@ -344,6 +344,17 @@ Only what must not break. Full behaviour lives in each `SKILL.md`.
 - **`design_provenance`** in `design.md` is a JSON block written in **every** mode
   (mode + fidelity always; `source` sub-object only in tool mode) — `ui-design`
   reads it to drive its anchor recommendation. Keep it machine-readable.
+  **Fidelity in tool mode is decided by the source, not the mode**: `exact` only
+  when values were *read* (variables, a published design system), `mapped` when
+  *inferred from a generated artifact's code*. `source.tool` is a stable slug —
+  `figma` | `figma-make` | `claude-design` | `open-design` | `<slug>` — and
+  `figma` / `figma-make` stay distinct despite sharing one connection, because
+  they differ in what was fetchable.
+- **Design-tool facts live in the two `design-tool-integrations.md` files, and
+  those files carry no date stamps** — current command shapes plus "verify
+  against live docs before instructing the user". A dated block reads stale
+  within a week and invites the reader to distrust the whole file. Per §4.9 the
+  verify instruction is the thing that matters, not a timestamp.
 - Hand-offs: the **SCR-ID screen inventory** feeds planning and ui-design;
   `design.md` + `tokens.json` are wired into the repo by scaffolding.
 - References: `elicitation-guide`, `source-modes`, `design-tool-integrations`,
