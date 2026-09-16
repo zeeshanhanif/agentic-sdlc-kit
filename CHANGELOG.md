@@ -14,10 +14,11 @@ pins its cache to that string, so plugin users keep the old copy until it change
   previously assumed one was already connected and named only Figma. Its
   reference gains a **detection and connection** section: three states rather
   than two (absent / configured-but-unauthorized / connected — a server whose
-  tools are listed can still fail every call), detection by **tool-name prefix
-  substring** because server names are mangled (`claude.ai Figma` surfaces as
-  `mcp__claude_ai_Figma__*`), an identity probe to prove authorization, and the
-  connection paths for Figma and Claude Design. `SKILL.md` Phase 1 gains the
+  tools are listed can still fail every call), detection **by capability rather
+  than by name** (runtimes namespace MCP tools differently and a server's
+  registered name often differs from the product's, so nothing gates on an
+  exact name), an identity probe to prove authorization, and the connection
+  paths for Figma and Claude Design. `SKILL.md` Phase 1 gains the
   branch it was missing: Mode 4 chosen with nothing connected now **offers to
   connect** instead of behaving undefinedly, and never silently downgrades.
 - **Claude Design** promoted from a three-line stub in both integration

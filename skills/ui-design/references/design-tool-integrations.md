@@ -30,11 +30,11 @@ tool; Strategy C carries the project).
   code-native path as the no-blocker alternative; re-verification mode can
   register tool designs later.
 - **Discovery**: list the connected MCP's tools; classify against the two
-  capabilities; don't assume names. Match servers by **tool-name prefix
-  substring** (`mcp__<server>__<tool>`, server names are mangled — `figma`,
-  `design`), never an exact name. Listed tools prove presence, not
-  authorization: one cheap identity call separates *connected* from
-  *configured but unauthorized*, and only the first can fetch.
+  capabilities; don't assume names. Runtimes namespace MCP tools differently
+  and a server's registered name often differs from the product's, so classify
+  by what a tool *does*, never by an exact server or tool name. Listed tools
+  prove presence, not authorization: one cheap identity call separates
+  *connected* from *configured but unauthorized*, and only the first can fetch.
 - **Matching** (Strategy A): find screens by SCR-ID naming in the tool
   (recommend designers put SCR IDs in frame names); otherwise match by
   screen name + surface and **confirm with the user** before registering —

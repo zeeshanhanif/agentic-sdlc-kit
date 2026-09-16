@@ -90,11 +90,11 @@ Three files, with a strict **authority split**:
    in the project, reference images **in `docs/design-refs/` only** (the
    convention location — no design-refs folder or no images there means images
    are treated as not present; do not scan the wider project), connected
-   design-tool MCPs. Detect those by **tool-name prefix substring**
-   (`mcp__<server>__<tool>`; server names are mangled, so match `figma` /
-   `design`, never an exact name) — Figma (covering Figma Make), Claude Design,
-   or any other. A server whose tools are listed may still be unauthorized;
-   treat "connected" as unproven until a cheap identity call succeeds.
+   design-tool MCPs — Figma (covering Figma Make), Claude Design, or any other.
+   Detect them **by capability, from the tools available in this session**,
+   never by an exact server name; a listed tool proves presence, not
+   authorization, so treat "connected" as unproven until a cheap identity call
+   succeeds.
    User-provided paths or attached images always
    win over detection. Detection is for *presenting options*, not for deciding.
 3. **Always ask the mode question** — even when nothing is found, and even when

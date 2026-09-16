@@ -19,11 +19,14 @@ two** — treat them differently:
    `list_projects` for Claude Design) before promising the user a fetch.
 3. **Absent** — no tools for that server at all.
 
-**Detect by tool-name prefix**, not by server name: MCP tools surface as
-`mcp__<server>__<tool>`, and the server name is mangled (a server registered as
-`claude.ai Figma` appears as `mcp__claude_ai_Figma__*`). **Match on a substring
-— `figma`, `design` — never an exact name.** Don't assume tool names either;
-list what's there and classify it.
+**Detect by capability, not by name.** Inspect the tools available to you in
+this session — however your runtime exposes them — and look for ones that read
+design data: variables or tokens, styles, components, screens/frames, design
+systems, project or file listings. Runtimes name and namespace MCP tools
+differently, and a server's registered name often differs from the product's
+(a Figma connection may be registered under any label), so **never gate on an
+exact server or tool name**. Classify what's actually there; if you can't tell
+whether a tool is a design tool, its own description will say.
 
 **Connection paths** (current shapes — **verify against live docs before
 instructing the user; these drift, and reciting a stale command wastes their
