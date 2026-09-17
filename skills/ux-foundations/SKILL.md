@@ -90,7 +90,12 @@ Three files, with a strict **authority split**:
    in the project, reference images **in `docs/design-refs/` only** (the
    convention location — no design-refs folder or no images there means images
    are treated as not present; do not scan the wider project), connected
-   design-tool MCPs (Figma etc.). User-provided paths or attached images always
+   design-tool MCPs — Figma (covering Figma Make), Claude Design, or any other.
+   Detect them **by capability, from the tools available in this session**,
+   never by an exact server name; a listed tool proves presence, not
+   authorization, so treat "connected" as unproven until a cheap identity call
+   succeeds.
+   User-provided paths or attached images always
    win over detection. Detection is for *presenting options*, not for deciding.
 3. **Always ask the mode question** — even when nothing is found, and even when
    exactly one source is found. Report what was detected, then offer the full
@@ -105,7 +110,11 @@ Three files, with a strict **authority split**:
      Extract palette, type feel, spacing, component shapes.
    - **Ingest a design file** — user provides (or confirms detected) an
      external design.md/brand document; map it onto our structure.
-   - **Connect a design tool** — pull tokens/styles/components via MCP.
+   - **Connect a design tool** — pull tokens/styles/components via MCP
+     (detected tools named as concrete options). If the mode is chosen and
+     nothing is connected, **offer to connect one** and say what it buys;
+     never silently fall back to another mode. `design-tool-integrations.md`
+     carries detection, the connection paths, and per-tool fetches.
    Folded variants: brand guidelines (PDF brand book) → ingest variant;
    existing codebase (CSS/Tailwind config) → extract variant, highest
    fidelity; mandated component framework (Material, shadcn) → one elicitation

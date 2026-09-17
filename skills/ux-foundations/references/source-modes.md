@@ -83,8 +83,11 @@ heading.
 
 ## Mode 4 — Connect a design tool (MCP)
 
-The highest-fidelity source: actual values, not approximations. Generic mapping
-(works for any tool):
+The highest-fidelity source **when the tool publishes values** — variables, or a
+design system — because those are read, not approximated. A tool that only
+emits generated artifacts (prompt-to-app output) is *not* automatically exact:
+its tokens are inferred from code, which is `mapped` fidelity. Check the tool's
+section before claiming precision. Generic mapping (works for any tool):
 
 - **Variables/tokens** → our token set (colors, spacing, radii, type sizes).
 - **Text styles** → the type scale.
@@ -93,10 +96,12 @@ The highest-fidelity source: actual values, not approximations. Generic mapping
 - **Key frames/screens** → layout/grid rules and, opportunistically, early
   screen-inventory hints.
 
-Per-tool specifics live in `references/design-tool-integrations.md`; when the
-connected tool has no section there, apply the generic mapping above. Fetch,
-map, play back (including anything the tool exposes that we don't model — note
-it), confirm, codify.
+Detection, the connection paths, and per-tool specifics live in
+`references/design-tool-integrations.md` — read it before this mode's first
+fetch; it also covers the case where the mode is chosen and nothing is
+connected. When the connected tool has no section there, apply the generic
+mapping above. Fetch, map, play back (including anything the tool exposes that
+we don't model — note it), confirm, codify.
 
 ---
 

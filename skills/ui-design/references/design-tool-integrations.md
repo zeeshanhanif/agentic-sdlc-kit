@@ -30,7 +30,11 @@ tool; Strategy C carries the project).
   code-native path as the no-blocker alternative; re-verification mode can
   register tool designs later.
 - **Discovery**: list the connected MCP's tools; classify against the two
-  capabilities; don't assume names.
+  capabilities; don't assume names. Runtimes namespace MCP tools differently
+  and a server's registered name often differs from the product's, so classify
+  by what a tool *does*, never by an exact server or tool name. Listed tools
+  prove presence, not authorization: one cheap identity call separates
+  *connected* from *configured but unauthorized*, and only the first can fetch.
 - **Matching** (Strategy A): find screens by SCR-ID naming in the tool
   (recommend designers put SCR IDs in frame names); otherwise match by
   screen name + surface and **confirm with the user** before registering —
@@ -56,17 +60,34 @@ conformance-check output like any generated artifact.
 
 ## Claude Design
 
-Generation-first design tool (research preview — surface may shift; keep every
-call in this skill). Strategy B: drive with design.md + tokens.json + the
-screen brief. Capture the artifact locator it yields. On first use, list its
-exposed tools and note them in the project docs as the working contract.
+**Both capabilities** (research preview — surface may shift; keep every call in
+this skill). Connection is its own server plus a *separate* design login; a
+normal login token carries no access, so expect the configured-but-unauthorized
+state on first use. Strategy A: list projects, list a project's files, read one
+— enumeration is real here, not assumed, so prior screens can be registered
+rather than regenerated. Strategy B: drive with design.md + tokens.json + the
+screen brief; capture the artifact locator it yields. It is design-system
+aware — prefer conforming to an existing system there over restating tokens in
+every brief. On first use, list its exposed tools and note them in the project
+docs as the working contract.
 
 ## Figma Make
 
-Generation-oriented (prompt-to-design/app). Stub — refine as usage patterns
-emerge: apply the generic generation protocol; its outputs carry an implicit
-system, so conformance-check firmly against design.md. If it exposes
-enumeration of prior generations, Strategy A applies to those.
+**Same server and auth as Figma — nothing extra to connect** — but a much
+narrower surface. Make files (`/make/` in the URL) hold generated code, and
+**only the design-context fetch accepts them**: no variables, no structure
+metadata, no screenshot.
+
+- **Strategy A applies** to prior generations: the `/make/` URL is the locator,
+  and the single context fetch is the read. Its node target is fixed for Make
+  files — check the tool description rather than guessing.
+- **Strategy B does not.** No write tool accepts a `/make/` file, and new-file
+  creation offers no Make type — you cannot generate *into* Make. Generate into
+  a Figma **design** file instead, or fall to Strategy C for that screen. Say
+  which; don't let a screen silently go unbuilt.
+
+Outputs carry an implicit system, so conformance-check firmly against
+design.md — there are no published variables to check against.
 
 ## Open Design
 
