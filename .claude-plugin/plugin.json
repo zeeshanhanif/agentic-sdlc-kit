@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "agentic-sdlc-kit",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Twelve SDLC Agent Skills that carry a project from idea to a deployed, verified system — requirements, architecture, UX foundations, implementation plan, repo scaffolding and deployment, then a per-feature loop of detailed design, UI design, implementation and independent acceptance verification. A shared ID vocabulary and an append-only traceability matrix keep the twelve behaving as one pipeline.",
   "author": {
     "name": "Zeeshan Hanif",
