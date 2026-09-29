@@ -8,8 +8,7 @@ description: >-
   sign-up, sign-in, verification, password reset, logout) plus all
   non-functional requirements. Produces a structured SRS (ISO/IEC/IEEE 29148
   lineage) with functional requirements in EARS syntax or classic "shall"
-  statements (user's choice), in markdown, a separate
-  use-case document in markdown, and a
+  statements, in markdown, a separate use-case document, and a
   requirements traceability matrix. Also amends a finalized SRS —
   adding, updating, or removing requirements with stable IDs. Use at the start
   of a project before architecture and UX, or when changing existing
