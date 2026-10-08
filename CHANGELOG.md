@@ -10,6 +10,34 @@ pins its cache to that string, so plugin users keep the old copy until it change
 ## [Unreleased]
 
 ### Added
+- **The kit now verifies itself.** `scripts/validate.sh` runs the static checks
+  in one pass — the Agent Skills spec via `agentskills validate` (name, required
+  keys, description ≤ 1024 chars, warning above 1000), frontmatter limited to
+  `name` + `description`, reference integrity in both directions, README
+  "What's inside" trees against `skills/` on disk, the bare-name rule, every
+  Mermaid block parsed with mermaid-cli, and both plugin manifests (validity,
+  `version` only in `plugin.json`, no `skills` field).
+  `.github/workflows/validate.yml` runs it on every push and pull request;
+  no secrets, no model calls.
+- **A behaviour eval suite under `evals/`** for `claude plugin eval`, run
+  locally on the author's account by design. Eleven cases pin the loop and
+  audit contracts to a docs-only fixture project (`evals/_fixtures/todo-mini`):
+  computed position and announced-not-offered next-selection (orchestrator,
+  detailed-design, ui-design), tombstone skipping, the WIP-note stop state
+  with its four-element pause message, the two acceptance refusals (partial
+  acceptance, not developer-done), feature-implementation's two refusals
+  (no design pair, no codebase to inherit a harness from), and
+  pipeline-verify's error classification and skipped-check reporting. Each
+  case is one `case.yaml` plus a fixture script.
+  Twelve trigger cases check each description fires on a paraphrase — the
+  guard against truncation eating the trigger phrases. `evals/README.md`
+  documents the run commands and how to add a case.
+
+### Fixed
+- **`requirements-engineering`'s description exceeded the spec's 1024-char cap**
+  (1037). Trimmed to 1009 without touching a trigger phrase; strict loaders
+  truncate at the cap, and the trigger phrases are what sit at the end.
+
 - **`ux-foundations` Mode 4 can now find and connect a design tool.** The mode
   previously assumed one was already connected and named only Figma. Its
   reference gains a **detection and connection** section: three states rather
@@ -54,6 +82,10 @@ pins its cache to that string, so plugin users keep the old copy until it change
   two `design-tool-integrations.md` files carry **no date stamps**: current
   command shapes plus "verify against live docs", since a dated block reads
   stale within a week and invites distrust of the whole file.
+- **CLAUDE.md §1 no longer says the skills cannot be tested.** §7 now documents
+  the two tiers (static script, behaviour evals) and the rule to add a case
+  whenever a mandated phrase, refusal, or stop state changes. README
+  "Contributing" carries the same commands.
 
 ## [2.0.0] — 2026-09-15
 

@@ -1,0 +1,17 @@
+schema_version: "1.1"
+name: trigger-requirements-engineering
+description: 'The requirements-engineering description fires on a paraphrase of its trigger intent (review finding 2).'
+tags: [trigger]
+runs: 2
+execution:
+  model: claude-sonnet-5
+  max_turns: 8
+  timeout_seconds: 240
+  allowed_tools: [Read, Glob, Skill]
+  prompt: 'I''m starting a habit-tracking app and want the requirements gathered properly and written up as an SRS before anyone designs anything.'
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(agentic-sdlc-kit:)?requirements-engineering"'
+    min: 1

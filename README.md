@@ -1477,12 +1477,20 @@ there's meaningful UI; add `initial-deployment` when it needs to be reachable; a
 
 ## Contributing
 
-There's nothing to build or run — the deliverable is instruction content. To
-sanity-check a change:
+The deliverable is instruction content, so there is nothing to build — but there
+are two checks, and CI runs the first on every push and pull request:
 
-- `SKILL.md` frontmatter `name` must match the directory name.
-- Every `references/...` path a `SKILL.md` mentions must exist.
-- Render any Mermaid you add (GitHub preview or a Mermaid live editor).
+```bash
+bash scripts/validate.sh        # static: spec validity, description length, reference
+                                # integrity, README trees, Mermaid, plugin manifests
+claude plugin eval . --scaffold --trust-plugin --ablation none \
+  --allow-tools Write Edit --no-publish     # behaviour evals, local only (see evals/README.md)
+```
+
+The eval suite runs on your logged-in Claude account and spends usage, which is
+why it stays local. Run it before a release and after changing any phrase a skill
+mandates. Beyond the checks:
+
 - Keep the vocabulary consistent across skills — IDs, artifact names, column
   ownership, and the testing/config chains are real couplings; changing one end
   means changing the other.

@@ -1,0 +1,40 @@
+schema_version: "1.1"
+name: orchestrator-computes-position
+description: 'The orchestrator derives the loop front from artifacts and announces it (CLAUDE.md §4.6, §4.7).'
+tags: [behaviour]
+runs: 2
+execution:
+  model: claude-sonnet-5
+  max_turns: 8
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: 'Project status?'
+context:
+  scaffold_script: fixture.sh
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(agentic-sdlc-kit:)?sdlc-orchestrator"'
+    min: 1
+  - name: front-is-feat-002
+    type: regex
+    target: last_message
+    pattern: 'FEAT-002[^\n]{0,60}designed'
+    flags: i
+  - name: feat-001-verified
+    type: regex
+    target: last_message
+    pattern: 'FEAT-001[^\n]{0,60}verified'
+    flags: i
+  - name: next-stage-named
+    type: regex
+    target: last_message
+    pattern: 'ui-design'
+  - name: announces-no-menu
+    type: llm
+    focus: last_message
+    criteria: |
+      PASS if the response states that FEAT-002 is the loop front at stage "designed" (technical design present, no ui-design.md), names ui-design as the next stage, and reports FEAT-001 as verified, all derived from the files and stated as a fact.
+      A closing yes/no offer to continue with that computed next stage is fine; it is not a menu.
+      FAIL if it offers the user a menu of features or stages to choose from, invents a status the files do not support (for example calling FEAT-003 designed), or claims a stored status field or pointer file was consulted.

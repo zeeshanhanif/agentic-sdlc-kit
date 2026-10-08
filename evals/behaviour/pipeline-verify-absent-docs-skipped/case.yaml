@@ -1,0 +1,36 @@
+schema_version: "1.1"
+name: pipeline-verify-absent-docs-skipped
+description: 'Absent documents scope checks out: with only srs.md present the report is clean and lists the skipped seams, never failed.'
+tags: [behaviour]
+runs: 2
+execution:
+  model: claude-sonnet-5
+  max_turns: 30
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+  prompt: 'Verify the pipeline.'
+context:
+  scaffold_script: fixture.sh
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(agentic-sdlc-kit:)?pipeline-verify"'
+    min: 1
+  - name: report-written
+    type: file_exists
+    path: docs/pipeline-verify-report.md
+  - name: no-errors
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: '\[ERROR\]'
+    match: not_contains
+  - name: verdict-clean
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: 'Verdict: \*{0,2}clean'
+    flags: i
+  - name: skipped-listed
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: '## Skipped checks[\s\S]*(rtm|use-cases|implementation-plan)'

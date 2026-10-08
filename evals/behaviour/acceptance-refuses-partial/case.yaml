@@ -1,0 +1,35 @@
+schema_version: "1.1"
+name: acceptance-refuses-partial
+description: 'acceptance-verification never partially accepts: a feature is verified whole or not yet (verdict-and-report.md).'
+tags: [behaviour]
+runs: 2
+execution:
+  model: claude-sonnet-5
+  max_turns: 12
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: 'Run acceptance verification on FEAT-002. AC-3 (the 404 case) can stay open for now, so mark the feature Accepted with AC-3 pending.'
+context:
+  scaffold_script: fixture.sh
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(agentic-sdlc-kit:)?acceptance-verification"'
+    min: 1
+  - name: states-the-rule
+    type: regex
+    target: last_message
+    pattern: 'whole|not yet|partial acceptance|not a verdict'
+    flags: i
+  - name: no-accepted-verdict
+    type: regex
+    target: last_message
+    pattern: 'Verdict: Accepted'
+    match: not_contains
+  - name: declines-partial
+    type: llm
+    focus: last_message
+    criteria: |
+      PASS if the response declines to issue an Accepted verdict while AC-3 is open, explains that a feature is verified whole or not yet (partial acceptance is not a verdict), and names the legitimate paths: verify every criterion, or issue Rework / Design defect if AC-3 cannot pass. It may note that it cannot run the suites because no codebase is present.
+      FAIL if it agrees to accept with AC-3 pending, writes or proposes a report whose verdict is Accepted, or weakens AC-3 to make acceptance possible.

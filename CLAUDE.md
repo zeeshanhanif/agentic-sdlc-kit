@@ -7,15 +7,16 @@ change.
 ## 1. What you are working on
 
 This repo contains **twelve Agent Skills** (open `SKILL.md` standard) that form one
-SDLC pipeline. There is **no application code, build system, test suite, or
-linter**. The deliverable is instruction content loaded into an agent's context at
-runtime.
+SDLC pipeline. There is **no application code or build system**; the only
+executable things are the checks in §7. The deliverable is instruction content
+loaded into an agent's context at runtime.
 
 Consequences for how you work here:
 
 - **"Correctness" means the instructions are unambiguous, well-scoped, and trigger
-  reliably** — not that something compiles. You cannot run these skills to test
-  them; review by reading.
+  reliably** — not that something compiles. Review by reading, then run the two
+  checks that exist (§7): `scripts/validate.sh` (static, free, CI runs it) and the
+  `evals/` suite (behaviour, spends your usage, local only).
 - **Every token costs.** `SKILL.md` is loaded on every invocation. Prefer deleting
   a sentence to adding one. Depth goes in `references/`, read on demand.
 - **The twelve skills are coupled.** Changing what one emits ripples into how the
@@ -33,6 +34,8 @@ Consequences for how you work here:
 skills/<skill-name>/
 ├── SKILL.md            # required: frontmatter + the workflow
 └── references/         # optional: guides SKILL.md tells the agent to read on demand
+scripts/validate.sh     # static checks (§7); CI runs it via .github/workflows/validate.yml
+evals/                  # behaviour evals for `claude plugin eval` (§7); local only
 ```
 
 The repo ships through **three** paths at once — the `skills` CLI, the Claude Code
@@ -568,21 +571,46 @@ Only what must not break. Full behaviour lives in each `SKILL.md`.
 
 ## 7. Validating a change
 
-There is nothing to build or run. Check:
+Two tiers, both cheap to run:
 
 ```bash
-# 1. frontmatter name matches the directory name
-for f in skills/*/SKILL.md; do
-  d=$(basename "$(dirname "$f")"); n=$(grep -m1 '^name:' "$f" | cut -d' ' -f2)
-  [ "$d" = "$n" ] || echo "MISMATCH: $d vs $n"
-done
+# 1. Static checks — what CI runs on every push and PR (.github/workflows/validate.yml)
+bash scripts/validate.sh              # SKIP_MERMAID=1 to skip the Chromium download
+```
 
-# 2. every referenced path exists
-grep -rhoE 'references/[a-z-]+\.md' skills/*/SKILL.md | sort -u
+The script enforces the invariants above mechanically: the Agent Skills spec via
+`agentskills validate` (name = directory, required keys, **description ≤ 1024
+chars** — it warns above 1000 because the trigger phrases sit at the end and are
+what truncation eats); frontmatter has exactly `name` + `description`; every
+`references/*.md` a `SKILL.md` cites exists and every reference file is cited
+by something in its skill; the README "What's inside" trees match `skills/` on
+disk; no slash-form skill reference inside `skills/`; every Mermaid block parses;
+both plugin manifests validate, `version` lives only in `plugin.json`, and neither
+manifest declares `skills`. A missing tool makes its check *skip* locally; CI
+installs uv, node, and the `claude` CLI so nothing is skipped there.
 
-# 3. no stale skill/artifact names after a rename
+```bash
+# 2. Behaviour evals — local only, on your logged-in account (see evals/README.md)
+claude plugin eval . --scaffold --trust-plugin --ablation none \
+  --allow-tools Write Edit --no-publish --judge-model haiku
+claude plugin eval . --scaffold --trust-plugin --ablation none --no-publish --tag trigger
+```
+
+Each case drops the `evals/_fixtures/todo-mini` project into a throwaway
+directory, sends one prompt, and grades the result — mostly by regex on what is
+decidable (the FEAT ID resolved as next, a refusal stated, a report section
+present), plus `tool_used` / `file_exists`, and an LLM judge only where regex
+cannot decide.
+Twelve trigger cases check each description still fires on a paraphrase. **Add a
+case when you add or change a mandated phrase, a refusal, or a stop state**, and
+never make a case pass by loosening the skill.
+
+Still manual:
+
+```bash
+# no stale skill/artifact names after a rename
 grep -rn '<old-name>' skills/ README.md CLAUDE.md CHANGELOG.md
 ```
 
-Then render any new Mermaid (GitHub preview or a Mermaid live editor), and re-read
-§4 for any contract your edit touched — the ripple is the part that breaks silently.
+Then re-read §4 for any contract your edit touched — the ripple is the part that
+breaks silently, and neither tier catches a contract that moved in one skill only.

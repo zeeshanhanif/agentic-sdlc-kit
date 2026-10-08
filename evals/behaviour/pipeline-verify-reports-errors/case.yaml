@@ -1,0 +1,52 @@
+schema_version: "1.1"
+name: pipeline-verify-reports-errors
+description: 'pipeline-verify finds a dangling FR citation and an active feature tracing a Removed FR, classifies them as errors under the owning skill, and reports absent-document checks as skipped.'
+tags: [behaviour]
+runs: 2
+execution:
+  model: claude-sonnet-5
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+  prompt: 'Verify the pipeline.'
+context:
+  scaffold_script: fixture.sh
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(agentic-sdlc-kit:)?pipeline-verify"'
+    min: 1
+  - name: report-written
+    type: file_exists
+    path: docs/pipeline-verify-report.md
+  - name: dangling-fr-is-error
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: '\[ERROR\](?:[^\n]|\n(?!- ))*FR-TASK-099'
+  - name: removed-fr-traced-is-error
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: '\[ERROR\](?:[^\n]|\n(?!- ))*FR-TASK-003'
+  - name: grouped-under-planning
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: '### implementation-planning'
+  - name: verdict-counts-errors
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: 'Verdict: \*{0,2}[0-9]+ errors?'
+    flags: i
+  - name: skipped-section-present
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: '## Skipped checks'
+  - name: design-md-skipped
+    type: regex
+    target: { source: file, path: docs/pipeline-verify-report.md }
+    pattern: 'design\.md|tokens\.json'
+  - name: no-pipeline-artifact-edited
+    type: regex
+    target: files
+    pattern: 'docs/(srs|rtm|implementation-plan|use-cases|architecture|ux-foundations)\.md|docs/features/'
+    match: not_contains

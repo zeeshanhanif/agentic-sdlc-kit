@@ -1,0 +1,34 @@
+schema_version: "1.1"
+name: orchestrator-wip-note-is-blocked
+description: 'A WIP failure note in tasks.md is a stop state: the orchestrator pauses, relays the note verbatim, and names the owner and resume path.'
+tags: [behaviour]
+runs: 2
+execution:
+  model: claude-sonnet-5
+  max_turns: 10
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: 'Continue the pipeline.'
+context:
+  scaffold_script: fixture.sh
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(agentic-sdlc-kit:)?sdlc-orchestrator"'
+    min: 1
+  - name: says-blocked
+    type: regex
+    target: last_message
+    pattern: 'blocked'
+    flags: i
+  - name: relays-note-verbatim
+    type: regex
+    target: last_message
+    pattern: 'KESTREL-42'
+  - name: pause-has-four-elements
+    type: llm
+    focus: last_message
+    criteria: |
+      PASS if the response pauses rather than continuing, and its pause message carries all four elements: (1) what stopped, meaning FEAT-002 task T3 blocked after exhausted fix attempts; (2) where, meaning the feature, the stage (feature-implementation / ui-designed) and the artifact (tasks.md); (3) who owns the next move, a human decision or a return to detailed-design if the note points at a design problem; (4) how to resume. It must also relay the failure note's content (hypotheses tried, the verbatim error) rather than summarizing it away.
+      FAIL if it attempts to fix the problem itself, skips ahead to T4 or to a later feature, edits tasks.md, or ends without saying who acts next.

@@ -1,0 +1,17 @@
+schema_version: "1.1"
+name: trigger-ux-foundations
+description: 'The ux-foundations description fires on a paraphrase of its trigger intent (review finding 2).'
+tags: [trigger]
+runs: 2
+execution:
+  model: claude-sonnet-5
+  max_turns: 8
+  timeout_seconds: 240
+  allowed_tools: [Read, Glob, Skill]
+  prompt: 'Set up the design system and the screen inventory for our web app before we plan the features.'
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(agentic-sdlc-kit:)?ux-foundations"'
+    min: 1

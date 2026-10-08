@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "policy": {
+    "fallback": "code-native",
+    "note": "asked once on first run; no design tool connected"
+  },
+  "screens": {
+    "SCR-WEB-001": {
+      "name": "Task list",
+      "surface": "WEB",
+      "feature": "FEAT-001",
+      "strategy": "code-native",
+      "source": {
+        "spec": "features/FEAT-001-add-task/ui-design.md#scr-web-001--task-list"
+      },
+      "states": {
+        "covered": ["default", "empty", "loading", "error"],
+        "gaps": [],
+        "supplements": []
+      },
+      "contract_bindings": ["POST /tasks"],
+      "conformance": { "result": "pass", "corrections": [], "escalations": [] },
+      "status": "designed",
+      "designed_at": "2026-09-06"
+    },
+    "SCR-WEB-002": {
+      "name": "Add task",
+      "surface": "WEB",
+      "feature": "FEAT-001",
+      "strategy": "code-native",
+      "source": {
+        "spec": "features/FEAT-001-add-task/ui-design.md#scr-web-002--add-task"
+      },
+      "states": {
+        "covered": ["default", "error"],
+        "gaps": [],
+        "supplements": []
+      },
+      "contract_bindings": ["POST /tasks"],
+      "conformance": { "result": "pass", "corrections": [], "escalations": [] },
+      "status": "designed",
+      "designed_at": "2026-09-06"
+    }
+  }
+}

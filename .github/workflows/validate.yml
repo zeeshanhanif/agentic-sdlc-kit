@@ -1,0 +1,29 @@
+# Static validation of the kit. Free: no API key, no model calls.
+# Behaviour evals (evals/) are run locally on purpose — see evals/README.md.
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Install the claude CLI (manifest validation only, no login needed)
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Run static checks
+        run: bash scripts/validate.sh
