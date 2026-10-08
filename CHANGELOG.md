@@ -7,7 +7,7 @@ Entries are grouped by date. Releases are tagged, and a release that changes wha
 the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
 pins its cache to that string, so plugin users keep the old copy until it changes.
 
-## [Unreleased]
+## [2.0.4] — 2026-10-08
 
 ### Added
 - **`ux-foundations` Mode 4 can now find and connect a design tool.** The mode
@@ -36,6 +36,12 @@ pins its cache to that string, so plugin users keep the old copy until it change
   into a Figma design file or fall to code-native).
 
 ### Changed
+- **Plugin manifest (2.0.4).** `plugin.json` gains `displayName` ("Agentic SDLC
+  Kit", shown in the UI in place of `name`), `author.email`, and `icon`
+  pointing at `./.claude-plugin/icon.svg` — manifest paths resolve from the
+  plugin root, not from `.claude-plugin/`. `icon` is read only by Anthropic's
+  plugin directory; Claude Code ignores it at load time. Version bumped to
+  2.0.4 so plugin users pick up the new manifest.
 - **`design_provenance` fidelity is now decided by the source, not the mode.**
   `design-md-guide.md` §9 previously hard-mapped "tool → exact". That is wrong
   for a prompt-to-app tool: with no variables to read, tokens are inferred from
