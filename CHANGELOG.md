@@ -7,6 +7,13 @@ Entries are grouped by date. Releases are tagged, and a release that changes wha
 the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
 pins its cache to that string, so plugin users keep the old copy until it changes.
 
+## [2.0.5] — 2026-10-08
+
+### Changed
+- **Plugin icon is now a PNG.** `icon` in `plugin.json` points at
+  `./docs/assets/logo.png`, a 512×512 PNG rendered from `docs/assets/logo.svg`,
+  replacing `./.claude-plugin/icon.svg`. Version bumped to 2.0.5.
+
 ## [2.0.4] — 2026-10-08
 
 ### Added
