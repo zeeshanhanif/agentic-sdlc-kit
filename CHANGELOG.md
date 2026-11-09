@@ -7,7 +7,10 @@ Entries are grouped by date. Releases are tagged, and a release that changes wha
 the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
 pins its cache to that string, so plugin users keep the old copy until it changes.
 
-## [Unreleased]
+## [2.0.6] — 2026-11-09
+
+Clears the findings the plugin directory raised on the live 2.0.5 listing.
+Version bumped to 2.0.6 so plugin users pick up the changes.
 
 ### Changed
 - **Contributor notes moved from the root `CLAUDE.md` to `.claude/CLAUDE.md`.**
