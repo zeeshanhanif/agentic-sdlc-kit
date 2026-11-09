@@ -7,7 +7,9 @@ Entries are grouped by date. Releases are tagged, and a release that changes wha
 the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
 pins its cache to that string, so plugin users keep the old copy until it changes.
 
-## [Unreleased]
+## [2.0.7] — 2026-11-09
+
+Version bumped to 2.0.7 so plugin users pick up the change.
 
 ### Removed
 - **Both SVG files** — the logo source under docs/assets and the unused icon
