@@ -7,6 +7,18 @@ Entries are grouped by date. Releases are tagged, and a release that changes wha
 the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
 pins its cache to that string, so plugin users keep the old copy until it changes.
 
+## [2.0.7] — 2026-11-09
+
+Version bumped to 2.0.7 so plugin users pick up the change.
+
+### Removed
+- **Both SVG files** — the logo source under docs/assets and the unused icon
+  in .claude-plugin. The plugin directory refused 2.0.6 because it accepts
+  only Markdown, text, JSON, YAML, and PNG, JPEG, GIF, WebP or ICO images from
+  non-Verified organizations, and these were the only shipped files outside
+  that list. The README header now shows the PNG logo at the same size. Both
+  files remain in git history.
+
 ## [2.0.6] — 2026-11-09
 
 Clears the findings the plugin directory raised on the live 2.0.5 listing.
