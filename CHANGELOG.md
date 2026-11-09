@@ -7,12 +7,35 @@ Entries are grouped by date. Releases are tagged, and a release that changes wha
 the plugin ships must bump `version` in `.claude-plugin/plugin.json` — Claude Code
 pins its cache to that string, so plugin users keep the old copy until it changes.
 
+## [2.0.6] — 2026-11-09
+
+Clears the findings the plugin directory raised on the live 2.0.5 listing.
+Version bumped to 2.0.6 so plugin users pick up the changes.
+
+### Changed
+- **Contributor notes moved from the root `CLAUDE.md` to `.claude/CLAUDE.md`.**
+  The repo root is the plugin root, where a `CLAUDE.md` isn't loaded for plugin
+  users and draws a plugin-directory warning. Claude Code still loads
+  `.claude/CLAUDE.md` as project instructions for anyone working in the repo.
+- **New root `AGENTS.md`** — a pointer, no content of its own, that sends
+  non-Claude coding agents to `.claude/CLAUDE.md`. Claude Code skips `AGENTS.md`
+  when a `CLAUDE.md` exists, so nothing loads twice.
+- **CHANGELOG no longer writes bundled image paths in backticks**, which the
+  plugin directory holds for review.
+- **Sign-in wording, no behaviour change.** `initial-deployment` (description,
+  principle 2, Phase 2, "What good looks like"), both
+  `design-tool-integrations.md` references, the CI section of
+  `deployment-guide.md`, the config-variable example in `feature-implementation`'s
+  execution guide, and the README now describe the user signing in to the
+  provider CLI or design tool. Every rule is unchanged: the skill still blocks
+  when the user isn't signed in and never handles a secret value.
+
 ## [2.0.5] — 2026-10-08
 
 ### Changed
-- **Plugin icon is now a PNG.** `icon` in `plugin.json` points at
-  `./docs/assets/logo.png`, a 512×512 PNG rendered from `docs/assets/logo.svg`,
-  replacing `./.claude-plugin/icon.svg`. Version bumped to 2.0.5.
+- **Plugin icon is now a PNG.** `icon` in `plugin.json` points at the 512×512
+  PNG logo under docs/assets, rendered from the SVG logo beside it, replacing
+  the SVG icon in .claude-plugin. Version bumped to 2.0.5.
 
 ## [2.0.4] — 2026-10-08
 
@@ -45,7 +68,7 @@ pins its cache to that string, so plugin users keep the old copy until it change
 ### Changed
 - **Plugin manifest (2.0.4).** `plugin.json` gains `displayName` ("Agentic SDLC
   Kit", shown in the UI in place of `name`), `author.email`, and `icon`
-  pointing at `./.claude-plugin/icon.svg` — manifest paths resolve from the
+  pointing at the SVG icon in .claude-plugin — manifest paths resolve from the
   plugin root, not from `.claude-plugin/`. `icon` is read only by Anthropic's
   plugin directory; Claude Code ignores it at load time. Version bumped to
   2.0.4 so plugin users pick up the new manifest.

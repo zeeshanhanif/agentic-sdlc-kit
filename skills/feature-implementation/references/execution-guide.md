@@ -54,8 +54,8 @@ committed, nothing important only in memory.
 
 ## Tasks that introduce a configuration variable
 
-A task needing a new environment variable (a service URL, a key, a tunable)
-handles it **in the same task**, three steps:
+A task needing a new environment variable (a service URL, a third-party
+setting, a tunable) handles it **in the same task**, three steps:
 
 1. **Add it to the owning unit's config template** — name plus placeholder,
    never a working value; mark it under the secrets grouping if disclosure

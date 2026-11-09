@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 Working notes for agents editing **this** repository. Not user documentation —
-that's [`README.md`](./README.md), and it must be updated whenever the facts here
+that's [`README.md`](../README.md), and it must be updated whenever the facts here
 change.
 
 ## 1. What you are working on
@@ -27,6 +27,9 @@ Consequences for how you work here:
 ## 2. Layout and install-path invariants
 
 ```text
+AGENTS.md               # pointer only: sends non-Claude agents to .claude/CLAUDE.md
+.claude/
+└── CLAUDE.md           # these notes (the single source of agent instructions)
 .claude-plugin/
 ├── plugin.json         # Claude Code plugin manifest (owns `version`)
 └── marketplace.json    # the `zeeshanhanif` marketplace, one entry, source "./"
@@ -55,6 +58,10 @@ Load-bearing and easy to break:
   `.claude/skills/<name>/SKILL.md` (project). One level too deep silently fails.
 - Renaming a skill directory or its frontmatter `name` changes the install command
   → update README's Install section and every example in lockstep.
+- **These notes live at `.claude/CLAUDE.md`, never the repo root.** The repo root
+  is the plugin root, where a `CLAUDE.md` isn't loaded for installers and draws a
+  plugin-directory warning. Root `AGENTS.md` stays a one-line pointer here for
+  non-Claude agents — put substance in this file only, so the two never diverge.
 
 Plugin-specific, all verified against the live docs:
 
@@ -581,7 +588,7 @@ done
 grep -rhoE 'references/[a-z-]+\.md' skills/*/SKILL.md | sort -u
 
 # 3. no stale skill/artifact names after a rename
-grep -rn '<old-name>' skills/ README.md CLAUDE.md CHANGELOG.md
+grep -rn '<old-name>' skills/ README.md .claude/CLAUDE.md CHANGELOG.md
 ```
 
 Then render any new Mermaid (GitHub preview or a Mermaid live editor), and re-read

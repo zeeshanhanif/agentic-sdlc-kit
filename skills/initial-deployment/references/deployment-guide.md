@@ -87,11 +87,11 @@ Extend the existing CI config: deploy job(s) gated per the architecture's
 cadence — merge-triggered to the lower environment, promotion to production
 per the deployment view (tag, or an explicit manual approval step; when the
 view is silent, default to manual promotion and record the default). The
-pipeline's deploy credentials use the provider's recommended CI identity
-mechanism (workload identity/OIDC where offered, over long-lived keys) —
-configured by reference, values/trust user-established. **Proof is a real
-run**: a pipeline execution observed building and deploying; a green config
-that never ran proves nothing.
+pipeline deploys under the provider's recommended CI identity mechanism
+(workload identity/OIDC where offered, over long-lived static keys) —
+configured by reference, with the trust relationship set up by the user.
+**Proof is a real run**: a pipeline execution observed building and deploying;
+a green config that never ran proves nothing.
 
 ## Deploying and closing the done-when (Phase 6)
 

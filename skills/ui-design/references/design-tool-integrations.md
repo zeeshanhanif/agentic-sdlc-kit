@@ -61,8 +61,8 @@ conformance-check output like any generated artifact.
 ## Claude Design
 
 **Both capabilities** (research preview — surface may shift; keep every call in
-this skill). Connection is its own server plus a *separate* design login; a
-normal login token carries no access, so expect the configured-but-unauthorized
+this skill). Connection is its own server plus a *separate* design sign-in;
+the normal Claude sign-in grants no access, so expect the configured-but-unauthorized
 state on first use. Strategy A: list projects, list a project's files, read one
 — enumeration is real here, not assumed, so prior screens can be registered
 rather than regenerated. Strategy B: drive with design.md + tokens.json + the
