@@ -924,9 +924,10 @@ Three principles govern it:
   docs at run time**, never recited from memory.
 - **Money and credentials get gates.** The deployment plan (resources,
   environments, rough cost class) is played back for **one explicit confirmation**
-  — nothing billable exists before that nod. Credentials stay yours: the skill
-  preflights that your provider CLI is authenticated and blocks with instructions
-  if it isn't, and never asks for, stores, or writes a secret **value** anywhere.
+  — nothing billable exists before that nod. Sign-in stays yours: the skill
+  preflights that you're signed in to your provider CLI and blocks with
+  instructions if you aren't, and never reads, asks for, stores, or writes a
+  secret **value** anywhere.
 - **Deployed means demonstrated.** The skeleton exercised live, CD proven by an
   observed pipeline run, the restore actually performed, alerting fired once to a
   human.
@@ -1488,8 +1489,9 @@ sanity-check a change:
   means changing the other.
 - Update this README and `CHANGELOG.md` alongside the change.
 
-See [`CLAUDE.md`](./CLAUDE.md) for the full set of invariants a contributor (human
-or agent) needs to respect.
+See [`.claude/CLAUDE.md`](./.claude/CLAUDE.md) for the full set of invariants a
+contributor (human or agent) needs to respect. Non-Claude coding agents reach it
+through the root [`AGENTS.md`](./AGENTS.md) pointer.
 
 ## License
 

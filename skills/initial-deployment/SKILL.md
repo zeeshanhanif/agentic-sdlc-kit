@@ -11,8 +11,9 @@ description: >-
   acceptance reports. Folds in minimum operations: uptime check, error
   alerting, backup-and-restore verified. Cloud-agnostic: the process is
   encoded, the target is an input, CLI specifics verified against live docs.
-  Requires user-held cloud credentials (blocking ask) and confirms the plan
-  before creating billable resources. Trigger on "deploy the project", "first
+  Requires the user signed in to the provider CLI (blocking ask) and
+  confirms the plan before creating billable resources. Trigger on "deploy the
+  project", "first
   deploy", "initial deployment", "provision the infrastructure", "set up the
   environments", "take it live", or "go to production".
 ---
@@ -38,10 +39,10 @@ Three principles govern it:
 2. **Money and credentials get gates.** Provisioning creates billable
    resources: the deployment plan (what gets created, environments, rough cost
    class) is played back for **one explicit confirmation** before anything is
-   created. Credentials stay in the user's hands: the skill preflights that
-   the provider CLI is authenticated and **blocks with instructions when it
-   isn't** — it never asks for, stores, or writes a credential or secret
-   value anywhere (configs reference secret stores; values enter those stores
+   created. Sign-in stays with the user: the skill preflights that the user
+   is signed in to the provider CLI and **blocks with instructions when they
+   aren't** — it never reads, asks for, stores, or writes a credential or
+   secret value anywhere (configs reference secret stores; values enter those stores
    through the provider's own mechanism, user-driven).
 3. **Deployed means demonstrated.** The run ends with the system observed
    live: the skeleton's end-to-end path exercised against the deployed
@@ -126,12 +127,12 @@ the **deployment plan**: what gets created where, the rough cost class, what the
 first deployed artifact will be — and get explicit confirmation. **Nothing
 billable exists before this nod.**
 
-### Phase 2 — Preflight (credentials and tools)
+### Phase 2 — Preflight (sign-in and tools)
 
-Provider CLI present and **authenticated as the user** — if not, a blocking
-ask with pointers to the provider's current auth setup (verified against live
-docs), then re-check. Required tools at needed versions. The skill never
-touches credential values; authentication is the user's, session-ambient.
+Provider CLI present and **the user signed in to it** — if not, a blocking
+ask with pointers to the provider's current sign-in steps (verified against
+live docs), then re-check. Required tools at needed versions. The skill never
+touches credential values; the user signs in through the provider's own CLI.
 
 ### Phase 3 — Provision
 
@@ -233,5 +234,5 @@ scaffold-notes' own pending marker (Outputs 4).
   test.
 - deployment-notes lets a cold session (or a human) operate the deployment:
   URLs, commands, rollback, secret locations — no tribal knowledge.
-- A revoked credential or missing tool produced a clear blocking ask — never
+- A lapsed sign-in or missing tool produced a clear blocking ask — never
   a workaround, never a stored secret.
