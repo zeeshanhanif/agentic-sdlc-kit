@@ -21,11 +21,11 @@ pins its cache to that string, so plugin users keep the old copy until it change
   plugin directory holds for review.
 - **Sign-in wording, no behaviour change.** `initial-deployment` (description,
   principle 2, Phase 2, "What good looks like"), both
-  `design-tool-integrations.md` references, and the README describe the user
-  signing in to the provider CLI or design tool rather than "credentials",
-  "authenticated as the user" or a "login token". Every rule is unchanged: the
-  skill still blocks when the user isn't signed in and never reads, asks for,
-  stores, or writes a credential or secret value.
+  `design-tool-integrations.md` references, the CI section of
+  `deployment-guide.md`, the config-variable example in `feature-implementation`'s
+  execution guide, and the README now describe the user signing in to the
+  provider CLI or design tool. Every rule is unchanged: the skill still blocks
+  when the user isn't signed in and never handles a secret value.
 
 ## [2.0.5] — 2026-10-08
 

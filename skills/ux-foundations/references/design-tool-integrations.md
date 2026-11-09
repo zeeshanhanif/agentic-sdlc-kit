@@ -32,8 +32,9 @@ whether a tool is a design tool, its own description will say.
 instructing the user; these drift, and reciting a stale command wastes their
 time**):
 
-- **Figma** — remote MCP server at `https://mcp.figma.com/mcp`, then authorize
-  via the runtime's MCP panel (OAuth). Covers Figma Design *and* Figma Make.
+- **Figma** — remote MCP server at `https://mcp.figma.com/mcp`, then the user
+  signs in through the runtime's MCP panel (browser sign-in). Covers Figma
+  Design *and* Figma Make.
 - **Claude Design** — server `claude-design` at
   `https://api.anthropic.com/v1/design/mcp`, added explicitly, then
   authorized with **`/design-login`** — a *separate* step from the normal
